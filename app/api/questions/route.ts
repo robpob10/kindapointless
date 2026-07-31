@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCustomQuestions, addQuestion } from '@/lib/db';
+import { getCustomQuestions, addQuestion, getAnswerCounts } from '@/lib/db';
 import { QUESTIONS } from '@/lib/questions';
 import { GAME_ID } from '@/lib/config';
 
@@ -19,11 +19,29 @@ function merge(custom: string[]): string[] {
   return out;
 }
 
+// Most-answered questions first, so the best ones lead the collect page.
+// Ties keep their original order (sort is stable).
+function byPopularity(questions: string[], counts: Record<string, number>): string[] {
+  return [...questions].sort(
+    (a, b) => (counts[b.trim().toLowerCase()] || 0) - (counts[a.trim().toLowerCase()] || 0)
+  );
+}
+
+async function sortedQuestions(): Promise<string[]> {
+  const custom = await getCustomQuestions(GAME_ID);
+  let counts: Record<string, number> = {};
+  try {
+    counts = await getAnswerCounts(GAME_ID);
+  } catch {
+    /* fall back to unsorted */
+  }
+  return byPopularity(merge(custom), counts);
+}
+
 export async function GET() {
   const headers = { 'Cache-Control': 'no-store' };
   try {
-    const custom = await getCustomQuestions(GAME_ID);
-    return NextResponse.json({ questions: merge(custom) }, { headers });
+    return NextResponse.json({ questions: await sortedQuestions() }, { headers });
   } catch {
     // If storage isn't configured yet, still serve the base questions.
     return NextResponse.json({ questions: QUESTIONS }, { headers });
@@ -38,8 +56,7 @@ export async function POST(req: NextRequest) {
     if (t.length > 200) return NextResponse.json({ error: 'question too long' }, { status: 400 });
 
     await addQuestion(GAME_ID, t);
-    const custom = await getCustomQuestions(GAME_ID);
-    return NextResponse.json({ ok: true, questions: merge(custom) });
+    return NextResponse.json({ ok: true, questions: await sortedQuestions() });
   } catch (err) {
     console.error('[POST /api/questions]', err);
     return NextResponse.json(

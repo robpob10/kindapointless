@@ -64,6 +64,18 @@ export async function clearAll(game: string): Promise<void> {
   await sql`DELETE FROM answers WHERE game = ${game}`;
 }
 
+
+/** Total answers submitted per question (for sorting the collect page). */
+export async function getAnswerCounts(game: string): Promise<Record<string, number>> {
+  await ensureTable();
+  const r = await sql<{ question: string; n: number }>`
+    SELECT question, count(*)::int AS n FROM answers WHERE game = ${game} GROUP BY question
+  `;
+  const out: Record<string, number> = {};
+  for (const row of r.rows) out[row.question.trim().toLowerCase()] = row.n;
+  return out;
+}
+
 // ---- custom questions (added by attendees on /collect) ----
 
 async function ensureQuestionsTable() {
