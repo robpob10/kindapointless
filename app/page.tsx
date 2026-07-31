@@ -1,16 +1,19 @@
 import Link from 'next/link';
 import HomeRules from '@/components/HomeRules';
-import { NAME } from '@/lib/config';
+import { getSiteSettings } from '@/lib/settings';
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const s = await getSiteSettings();
   return (
     <main className="flex min-h-screen justify-center px-8 pb-10 pt-12 sm:pt-16">
       <div className="relative z-10 w-full max-w-[560px]">
         <p className="text-xs font-bold uppercase tracking-[0.28em] text-zinc-400">
-          {NAME}&apos;s Big Day
+          {s.name}&apos;s Big Day
         </p>
         <h1 className="mb-8 mt-2 text-6xl font-black leading-[0.92] tracking-tight sm:text-7xl">
-          {NAME}
+          {s.name}
           <br />
           Pointless
         </h1>
@@ -31,7 +34,7 @@ export default function Home() {
           >
             <h2 className="text-lg font-black tracking-tight">Submit answers</h2>
             <p className="text-sm text-zinc-400">
-              Answer the questions about {NAME} before the day. As many answers as you like.
+              Answer the questions about {s.name} before the day. As many answers as you like.
             </p>
           </Link>
           <Link
@@ -45,7 +48,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <HomeRules />
+        <HomeRules title={s.title} subject={s.name} winLabel={s.winWord} loseLabel={s.loseWord} />
       </div>
     </main>
   );

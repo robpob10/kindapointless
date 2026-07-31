@@ -4,7 +4,7 @@ import { GAME_ID } from '@/lib/config';
 
 export const dynamic = 'force-dynamic';
 
-const ADMIN_KEY = 'banana';
+import { ADMIN_KEY } from '@/lib/adminKey';
 
 function csvCell(v: unknown): string {
   const s = String(v ?? '');

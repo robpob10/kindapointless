@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import PlayGame from '@/components/PlayGame';
 import { GAME } from '@/lib/game';
-import { TITLE } from '@/lib/config';
+import { getSiteSettings } from '@/lib/settings';
 
-export default function PlayPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function PlayPage() {
+  const s = await getSiteSettings();
   if (GAME.questions.length === 0) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-8 text-center">
@@ -14,10 +17,12 @@ export default function PlayPage() {
           questions to <code className="text-zinc-200">lib/game.ts</code>.
         </p>
         <Link href="/" className="text-sm font-semibold text-zinc-400 hover:text-white">
-          ← {TITLE}
+          ← {s.title}
         </Link>
       </main>
     );
   }
-  return <PlayGame />;
+  return (
+    <PlayGame name={s.name} winLabel={s.winWord} loseLabel={s.loseWord} homeLabel={s.title} />
+  );
 }

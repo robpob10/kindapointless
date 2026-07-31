@@ -91,3 +91,48 @@ export async function addQuestion(game: string, text: string): Promise<void> {
     ON CONFLICT (game, text) DO NOTHING
   `;
 }
+
+// ---- site settings (name, win word, lose word — set on /admin) ----
+
+async function ensureSettingsTable() {
+  await sql`
+    CREATE TABLE IF NOT EXISTS settings (
+      id    SERIAL PRIMARY KEY,
+      game  VARCHAR(40) NOT NULL,
+      key   VARCHAR(40) NOT NULL,
+      value TEXT NOT NULL
+    )
+  `;
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS settings_game_key ON settings (game, key)`;
+}
+
+export async function getSettings(game: string): Promise<Record<string, string>> {
+  await ensureSettingsTable();
+  const r = await sql<{ key: string; value: string }>`
+    SELECT key, value FROM settings WHERE game = ${game}
+  `;
+  const out: Record<string, string> = {};
+  for (const row of r.rows) out[row.key] = row.value;
+  return out;
+}
+
+/** Upsert settings; an empty value deletes the row (reverting to the default). */
+export async function setSettings(game: string, entries: Record<string, string>): Promise<void> {
+  await ensureSettingsTable();
+  for (const [key, raw] of Object.entries(entries)) {
+    const value = (raw || '').trim();
+    if (!value) {
+      await sql`DELETE FROM settings WHERE game = ${game} AND key = ${key}`;
+    } else {
+      await sql`
+        INSERT INTO settings (game, key, value) VALUES (${game}, ${key}, ${value})
+        ON CONFLICT (game, key) DO UPDATE SET value = EXCLUDED.value
+      `;
+    }
+  }
+}
+
+export async function clearSettings(game: string): Promise<void> {
+  await ensureSettingsTable();
+  await sql`DELETE FROM settings WHERE game = ${game}`;
+}

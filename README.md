@@ -27,11 +27,21 @@ There are **no built-in questions** — attendees add their own on `/collect`.
 Those are stored in Postgres (`custom_questions`). If you want some questions
 from the start, add them to [`lib/questions.ts`](lib/questions.ts).
 
-## Admin — download the data (`/admin`)
+## Admin (`/admin`)
 
+Everything on `/admin` is hidden until the admin key is entered.
+
+- **Site settings** — set the subject's **name** (replaces the `<name>`
+  placeholder everywhere), and the **win word** / **lose word** used on the
+  boards (defaults: Win / Lose). Stored in Postgres; the site updates
+  immediately. Empty fields fall back to the defaults.
 - See how many answers are in, who's answered, and a live tally per question.
 - **Download CSV / JSON.** Bucket similar answers together (e.g. "UK" =
   "Britain" = "Great Britain") and count the votes.
+- **Danger zone: Clear database** — wipes the name, win/lose words, and all
+  submitted answers (custom questions are kept). Deliberately hard to press by
+  accident: it requires re-entering the admin key and pressing the button
+  twice within 8 seconds.
 
 ## Phase 2 — Play on the day (`/play`)
 
