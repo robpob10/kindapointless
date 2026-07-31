@@ -9,10 +9,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen justify-center px-8 pb-10 pt-12 sm:pt-16">
       <div className="relative z-10 w-full max-w-[560px]">
-        <p className="text-xs font-bold uppercase tracking-[0.28em] text-zinc-400">
-          {s.name}&apos;s Big Day
-        </p>
-        <h1 className="mb-8 mt-2 text-6xl font-black leading-[0.92] tracking-tight sm:text-7xl">
+        <h1 className="mb-8 text-6xl font-black leading-[0.92] tracking-tight sm:text-7xl">
           {s.name}
           <br />
           Pointless
