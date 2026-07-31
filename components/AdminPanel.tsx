@@ -324,7 +324,7 @@ export default function AdminPanel({
 
       <div className="mb-6 flex flex-wrap gap-2.5">
         <Stat n={rows.length} label="answers" />
-        <Stat n={people.size} label="people" />
+        <Stat n={people.size} label="devices" />
         <Stat n={questions.length} label="questions" />
       </div>
 

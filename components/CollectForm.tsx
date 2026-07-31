@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { NAME, TITLE } from '@/lib/config';
+import { GAME_ID, NAME, TITLE } from '@/lib/config';
 
 export default function CollectForm({
   subject = NAME,
@@ -13,7 +13,7 @@ export default function CollectForm({
   homeHref?: string;
   homeLabel?: string;
 }) {
-  const [username, setUsername] = useState('');
+  const [anonId, setAnonId] = useState('');
   const [questions, setQuestions] = useState<string[]>([]);
   const [draft, setDraft] = useState<Record<string, string>>({});
   const [saved, setSaved] = useState<Record<string, string[]>>({});
@@ -25,9 +25,29 @@ export default function CollectForm({
   const [addingQ, setAddingQ] = useState(false);
   const [qMsg, setQMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
 
-  const nameOk = username.trim().length > 0;
   const getDraft = (q: string) => draft[q] ?? '';
   const getSaved = (q: string) => saved[q] ?? [];
+
+  // Submissions are anonymous: mint a random per-device id so the same
+  // person can't double-count an answer but different people always do.
+  useEffect(() => {
+    const k = GAME_ID + '-anon-id';
+    let v = '';
+    try {
+      v = localStorage.getItem(k) || '';
+    } catch {
+      /* ignore */
+    }
+    if (!v) {
+      v = 'anon-' + Math.random().toString(36).slice(2, 10);
+      try {
+        localStorage.setItem(k, v);
+      } catch {
+        /* ignore */
+      }
+    }
+    setAnonId(v);
+  }, []);
 
   // Load the live question list (base + any custom ones people added).
   useEffect(() => {
@@ -44,11 +64,7 @@ export default function CollectForm({
   }, []);
 
   async function submitOne(q: string) {
-    const name = username.trim();
-    if (!name) {
-      setMsg({ q, kind: 'err', text: 'Enter your name at the top first 🙂' });
-      return;
-    }
+    const name = anonId || 'anon-' + Math.random().toString(36).slice(2, 10);
     const answer = getDraft(q).trim();
     if (!answer) {
       setMsg({ q, kind: 'err', text: 'Type an answer first.' });
@@ -123,7 +139,7 @@ export default function CollectForm({
       <div className="mb-6 mt-5 rounded-2xl border border-zinc-700 bg-zinc-900 p-5">
         <h2 className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400">How this works</h2>
         <ol className="list-decimal space-y-2 pl-5 leading-relaxed text-zinc-200">
-          <li>Add as many answers as you want to each question.</li>
+          <li>Add as many answers as you want to each question — it&apos;s completely anonymous.</li>
           <li>
             On the day, {subject} has to guess the answer that the fewest of us gave (without landing on an
             answer nobody said). Lowest non-zero answer → we all drink; otherwise {subject} drinks.
@@ -137,20 +153,6 @@ export default function CollectForm({
           ⚠ {setupError}
         </div>
       )}
-
-      <label htmlFor="username" className="mb-2 block font-extrabold tracking-tight">
-        Your name
-      </label>
-      <input
-        id="username"
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="e.g. Dave"
-        autoComplete="off"
-        className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-3.5 py-3 text-base text-white placeholder-zinc-500 outline-none focus:border-zinc-500"
-      />
-      {!nameOk && <p className="mt-1.5 text-sm text-zinc-500">Enter your name to start adding answers.</p>}
 
       <div className="mt-3">
         {questions.map((q, qi) => (
@@ -177,7 +179,7 @@ export default function CollectForm({
               <input
                 type="text"
                 value={getDraft(q)}
-                disabled={!nameOk || busy === q}
+                disabled={busy === q}
                 onChange={(e) => setDraft((prev) => ({ ...prev, [q]: e.target.value }))}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -191,7 +193,7 @@ export default function CollectForm({
               <button
                 type="button"
                 onClick={() => submitOne(q)}
-                disabled={!nameOk || busy === q || !getDraft(q).trim()}
+                disabled={busy === q || !getDraft(q).trim()}
                 className="shrink-0 rounded-xl bg-white px-4 py-2.5 text-[15px] font-extrabold tracking-tight text-black transition-colors hover:bg-zinc-200 disabled:opacity-40"
               >
                 {busy === q ? 'Saving…' : 'Submit'}
