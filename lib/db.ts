@@ -95,7 +95,7 @@ export async function addQuestion(game: string, text: string): Promise<void> {
   `;
 }
 
-// ---- site settings (name, win word, lose word — set on /admin) ----
+// ---- site settings (name, win word, lose word - set on /admin) ----
 
 async function ensureSettingsTable() {
   noStore();

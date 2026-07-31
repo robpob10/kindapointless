@@ -25,7 +25,7 @@ export default async function Home() {
           >
             <h2 className="text-lg font-black tracking-tight">Play the game →</h2>
             <p className="text-sm text-black/55">
-              The main event — dramatic reveals on the big screen. Use this on the day.
+              The main event - dramatic reveals on the big screen. Use this on the day.
             </p>
           </Link>
           <Link

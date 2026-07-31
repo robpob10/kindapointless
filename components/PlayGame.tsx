@@ -247,14 +247,14 @@ export default function PlayGame({
           {questions[qi].text}
         </h1>
         <p className="mb-6 text-center text-[15px] text-zinc-400">
-          {name} wins by naming any <b className="font-bold text-green-400">{winLabel}</b> answer — one only
+          {name} wins by naming any <b className="font-bold text-green-400">{winLabel}</b> answer - one only
           a single person gave.
         </p>
 
         <div className="flex w-full max-w-[900px] flex-col gap-4">
           <Section
             title={loseLabel}
-            subtitle="2+ people said these — no win"
+            subtitle="2+ people said these - no win"
             tone="lose"
             answers={loseAnswers}
             baseIndex={0}
@@ -262,7 +262,7 @@ export default function PlayGame({
           />
           <Section
             title={winLabel}
-            subtitle="only one person said these — name any & everyone drinks"
+            subtitle="only one person said these - name any & everyone drinks"
             tone="win"
             answers={winAnswers}
             baseIndex={loseAnswers.length}
@@ -277,7 +277,7 @@ export default function PlayGame({
 
           {atBoundary && (
             <p className="mt-6 text-center text-base font-bold text-green-400">
-              {loseLabel} done — press <b className="text-white">space</b> (or Resume ▸) for the {winLabel}{' '}
+              {loseLabel} done - press <b className="text-white">space</b> (or Resume ▸) for the {winLabel}{' '}
               answers.
             </p>
           )}

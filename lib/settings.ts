@@ -10,7 +10,7 @@ export type SiteSettings = {
 };
 
 // Effective settings for the site: overrides from Postgres, falling back to
-// the defaults in lib/config.ts. Never throws — pages must render even when
+// the defaults in lib/config.ts. Never throws - pages must render even when
 // storage isn't configured yet.
 export async function getSiteSettings(): Promise<SiteSettings> {
   noStore();

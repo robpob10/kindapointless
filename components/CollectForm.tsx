@@ -78,7 +78,7 @@ export default function CollectForm({
         setMsg({ q, kind: 'err', text: j.error || 'Something went wrong.' });
       }
     } catch {
-      setMsg({ q, kind: 'err', text: 'Network error — try again.' });
+      setMsg({ q, kind: 'err', text: 'Network error - try again.' });
     } finally {
       setBusy(null);
     }
@@ -106,7 +106,7 @@ export default function CollectForm({
         setQMsg({ kind: 'err', text: j.error || 'Could not add question.' });
       }
     } catch {
-      setQMsg({ kind: 'err', text: 'Network error — try again.' });
+      setQMsg({ kind: 'err', text: 'Network error - try again.' });
     } finally {
       setAddingQ(false);
     }

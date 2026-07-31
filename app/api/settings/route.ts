@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
   try {
     return NextResponse.json({ ok: true, ...shape(await getSettings(GAME_ID)) }, { headers });
   } catch {
-    // Storage not configured yet — key is still valid, serve defaults.
+    // Storage not configured yet - key is still valid, serve defaults.
     return NextResponse.json(
       {
         ok: true,

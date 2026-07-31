@@ -65,7 +65,7 @@ export default function AdminPanel({
       }
       void doLoad(k);
     } catch {
-      setUnlockNote('Network error — try again.');
+      setUnlockNote('Network error - try again.');
     }
   }
 
@@ -112,13 +112,13 @@ export default function AdminPanel({
       const j = await r.json().catch(() => ({}));
       if (r.ok) {
         if (j.raw) setForm({ name: j.raw.name || '', winWord: j.raw.winWord || '', loseWord: j.raw.loseWord || '' });
-        setSaveMsg({ err: false, text: 'Saved ✓ — the site updates immediately.' });
+        setSaveMsg({ err: false, text: 'Saved ✓ - the site updates immediately.' });
       } else {
         if (j.hint) setSetupHint(j.hint);
         setSaveMsg({ err: true, text: j.error || 'Could not save.' });
       }
     } catch {
-      setSaveMsg({ err: true, text: 'Network error — try again.' });
+      setSaveMsg({ err: true, text: 'Network error - try again.' });
     } finally {
       setSaving(false);
     }
@@ -161,12 +161,12 @@ export default function AdminPanel({
         setForm(EMPTY_FORM);
         setConfirmKey('');
         setLoadedAt('');
-        setClearMsg({ err: false, text: 'Database cleared — name, win/lose words, and all answers are gone.' });
+        setClearMsg({ err: false, text: 'Database cleared - name, win/lose words, and all answers are gone.' });
       } else {
         setClearMsg({ err: true, text: j.error === 'bad admin key' ? 'Wrong key.' : j.error || 'Could not clear.' });
       }
     } catch {
-      setClearMsg({ err: true, text: 'Network error — nothing was cleared.' });
+      setClearMsg({ err: true, text: 'Network error - nothing was cleared.' });
     } finally {
       setClearing(false);
     }
