@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSettings, setSettings } from '@/lib/db';
 import { GAME_ID, NAME } from '@/lib/config';
 import { ADMIN_KEY } from '@/lib/adminKey';
+import { dbTarget } from '@/lib/settings';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +31,7 @@ export async function GET(req: NextRequest) {
   }
   const headers = { 'Cache-Control': 'no-store' };
   try {
-    return NextResponse.json({ ok: true, ...shape(await getSettings(GAME_ID)) }, { headers });
+    return NextResponse.json({ ok: true, debugDb: dbTarget(), ...shape(await getSettings(GAME_ID)) }, { headers });
   } catch {
     // Storage not configured yet — key is still valid, serve defaults.
     return NextResponse.json(

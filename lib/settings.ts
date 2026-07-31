@@ -27,6 +27,20 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     winWord: (raw.win_word || '').trim() || 'Win',
     loseWord: (raw.lose_word || '').trim() || 'Lose',
     title: `${name} Pointless`,
-    debug: `keys=${Object.keys(raw).join(',') || 'none'}; err=${debugError || 'none'}`,
+    debug: `keys=${Object.keys(raw).join(',') || 'none'}; err=${debugError || 'none'}; db=${dbTarget()}`,
   };
+}
+
+// Temporary diagnostics: which Postgres host/db does this context see?
+export function dbTarget(): string {
+  const url = process.env.POSTGRES_URL || '';
+  const vars = ['POSTGRES_URL', 'POSTGRES_URL_NON_POOLING', 'DATABASE_URL']
+    .filter((k) => !!process.env[k])
+    .join('+');
+  try {
+    const u = new URL(url);
+    return `${u.hostname}${u.pathname} vars=${vars || 'NONE'}`;
+  } catch {
+    return `unparseable vars=${vars || 'NONE'}`;
+  }
 }
