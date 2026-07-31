@@ -12,10 +12,6 @@ export type SiteSettings = {
 // Effective settings for the site: overrides from Postgres, falling back to
 // the defaults in lib/config.ts. Never throws — pages must render even when
 // storage isn't configured yet.
-//
-// noStore() is load-bearing: the Postgres driver issues queries as fetch()
-// POSTs, and Next caches those in Server Component renders — without the
-// opt-out, pages serve whatever the table held the first time they rendered.
 export async function getSiteSettings(): Promise<SiteSettings> {
   noStore();
   let raw: Record<string, string> = {};

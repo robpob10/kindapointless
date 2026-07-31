@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export type AnswerRow = {
   username: string;
@@ -11,6 +12,7 @@ export type AnswerRow = {
 // without their submissions mixing.
 
 async function ensureTable() {
+  noStore();
   await sql`
     CREATE TABLE IF NOT EXISTS answers (
       id         SERIAL PRIMARY KEY,
@@ -65,6 +67,7 @@ export async function clearAll(game: string): Promise<void> {
 // ---- custom questions (added by attendees on /collect) ----
 
 async function ensureQuestionsTable() {
+  noStore();
   await sql`
     CREATE TABLE IF NOT EXISTS custom_questions (
       id         SERIAL PRIMARY KEY,
@@ -95,6 +98,7 @@ export async function addQuestion(game: string, text: string): Promise<void> {
 // ---- site settings (name, win word, lose word — set on /admin) ----
 
 async function ensureSettingsTable() {
+  noStore();
   await sql`
     CREATE TABLE IF NOT EXISTS settings (
       id    SERIAL PRIMARY KEY,
