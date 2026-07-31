@@ -12,10 +12,8 @@ There are two phases.
 ## Phase 1 — Gather answers (`/collect`)
 
 Attendees open the site before the day and answer questions about the subject.
-For each question they can give **as many answers as they like**. Submissions are
-**fully anonymous** — no name is asked for. Each browser silently gets a random
-`anon-…` id so one person can't double-count an answer while two different
-people always do; answers are stored as `anon-id | question | answer` rows.
+For each question they can give **as many answers as they like**. Each answer is
+stored as a `username | question | answer` row.
 
 **The rules attendees see:**
 
@@ -37,8 +35,7 @@ Everything on `/admin` is hidden until the admin key is entered.
   placeholder everywhere), and the **win word** / **lose word** used on the
   boards (defaults: Win / Lose). Stored in Postgres; the site updates
   immediately. Empty fields fall back to the defaults.
-- See how many answers are in, how many devices have answered, and a live tally
-  per question.
+- See how many answers are in, who's answered, and a live tally per question.
 - **Download CSV / JSON.** Bucket similar answers together (e.g. "UK" =
   "Britain" = "Great Britain") and count the votes.
 - **Danger zone: Clear database** — wipes the name, win/lose words, and all
