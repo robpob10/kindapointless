@@ -22,7 +22,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     raw = await getSettings(GAME_ID);
     const info = await sql`SELECT count(*)::int AS n, current_database() AS db, current_schema() AS sch FROM settings`;
     nAll = info.rows[0]?.n ?? -2;
-    curDb = `${info.rows[0]?.db}/${info.rows[0]?.sch}`;
+    const all = await sql`SELECT game, key, value FROM settings`;
+    curDb = `${info.rows[0]?.db}/${info.rows[0]?.sch}; gameId=[${GAME_ID}]; rows=${JSON.stringify(all.rows)}`;
   } catch (err) {
     debugError = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
     console.error('[getSiteSettings]', err);
