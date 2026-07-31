@@ -49,7 +49,7 @@ export default async function Home() {
         </div>
 
         <HomeRules title={s.title} subject={s.name} winLabel={s.winWord} loseLabel={s.loseWord} />
-        {s.debugError && <span hidden data-settings-error={s.debugError} />}
+        <span hidden data-settings-debug={s.debug} />
       </div>
     </main>
   );

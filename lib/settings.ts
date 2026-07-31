@@ -6,7 +6,7 @@ export type SiteSettings = {
   winWord: string;
   loseWord: string;
   title: string;
-  debugError?: string;
+  debug: string;
 };
 
 // Effective settings for the site: overrides from Postgres, falling back to
@@ -27,6 +27,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     winWord: (raw.win_word || '').trim() || 'Win',
     loseWord: (raw.lose_word || '').trim() || 'Lose',
     title: `${name} Pointless`,
-    debugError,
+    debug: `keys=${Object.keys(raw).join(',') || 'none'}; err=${debugError || 'none'}`,
   };
 }
