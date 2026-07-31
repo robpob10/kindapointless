@@ -1,3 +1,4 @@
+import { sql } from '@vercel/postgres';
 import { getSettings } from './db';
 import { GAME_ID, NAME } from './config';
 
@@ -15,8 +16,13 @@ export type SiteSettings = {
 export async function getSiteSettings(): Promise<SiteSettings> {
   let raw: Record<string, string> = {};
   let debugError: string | undefined;
+  let nAll = -1;
+  let curDb = '?';
   try {
     raw = await getSettings(GAME_ID);
+    const info = await sql`SELECT count(*)::int AS n, current_database() AS db, current_schema() AS sch FROM settings`;
+    nAll = info.rows[0]?.n ?? -2;
+    curDb = `${info.rows[0]?.db}/${info.rows[0]?.sch}`;
   } catch (err) {
     debugError = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
     console.error('[getSiteSettings]', err);
@@ -27,7 +33,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     winWord: (raw.win_word || '').trim() || 'Win',
     loseWord: (raw.lose_word || '').trim() || 'Lose',
     title: `${name} Pointless`,
-    debug: `keys=${Object.keys(raw).join(',') || 'none'}; err=${debugError || 'none'}; db=${dbTarget()}`,
+    debug: `ts=${new Date().toISOString()}; keys=${Object.keys(raw).join(',') || 'none'}; nAll=${nAll}; cur=${curDb}; err=${debugError || 'none'}; db=${dbTarget()}`,
   };
 }
 
