@@ -6,6 +6,7 @@ export type SiteSettings = {
   winWord: string;
   loseWord: string;
   title: string;
+  debugError?: string;
 };
 
 // Effective settings for the site: overrides from Postgres, falling back to
@@ -13,10 +14,12 @@ export type SiteSettings = {
 // storage isn't configured yet.
 export async function getSiteSettings(): Promise<SiteSettings> {
   let raw: Record<string, string> = {};
+  let debugError: string | undefined;
   try {
     raw = await getSettings(GAME_ID);
-  } catch {
-    /* storage not configured — use defaults */
+  } catch (err) {
+    debugError = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+    console.error('[getSiteSettings]', err);
   }
   const name = (raw.name || '').trim() || NAME;
   return {
@@ -24,5 +27,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     winWord: (raw.win_word || '').trim() || 'Win',
     loseWord: (raw.lose_word || '').trim() || 'Lose',
     title: `${name} Pointless`,
+    debugError,
   };
 }
