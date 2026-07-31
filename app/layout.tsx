@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: TITLE,
-  description: `Pointless (with a twist) about ${NAME}, for the stag do.`,
+  description: `Pointless (with a twist) about ${NAME}, for the big day.`,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

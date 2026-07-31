@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex min-h-screen justify-center px-8 pb-10 pt-12 sm:pt-16">
       <div className="relative z-10 w-full max-w-[560px]">
         <p className="text-xs font-bold uppercase tracking-[0.28em] text-zinc-400">
-          {NAME}&apos;s Stag Do
+          {NAME}&apos;s Big Day
         </p>
         <h1 className="mb-8 mt-2 text-6xl font-black leading-[0.92] tracking-tight sm:text-7xl">
           {NAME}
@@ -22,7 +22,7 @@ export default function Home() {
           >
             <h2 className="text-lg font-black tracking-tight">Play the game →</h2>
             <p className="text-sm text-black/55">
-              The main event — dramatic reveals on the big screen. Use this on the stag.
+              The main event — dramatic reveals on the big screen. Use this on the day.
             </p>
           </Link>
           <Link

@@ -1,7 +1,7 @@
 # Kinda Pointless 🍺
 
 A **Next.js** web app for playing **Pointless** (with a twist) about a friend,
-for their stag do. Next.js 14 (App Router) + TypeScript + Tailwind, with
+for their big day. Next.js 14 (App Router) + TypeScript + Tailwind, with
 **Vercel Postgres** for storage.
 
 Set who the game is about in [`lib/config.ts`](lib/config.ts) — change `NAME`
@@ -11,14 +11,14 @@ There are two phases.
 
 ## Phase 1 — Gather answers (`/collect`)
 
-Attendees open the site before the stag and answer questions about the subject.
+Attendees open the site before the day and answer questions about the subject.
 For each question they can give **as many answers as they like**. Each answer is
 stored as a `username | question | answer` row.
 
 **The rules attendees see:**
 
 1. Add as many answers as you want to each question.
-2. On the stag, the subject has to guess the answer the fewest of us gave
+2. On the day, the subject has to guess the answer the fewest of us gave
    (without landing on an answer nobody said). Lowest non-zero answer → we all
    drink; otherwise they drink.
 3. Joke answers are allowed but may get pruned.
@@ -33,7 +33,7 @@ from the start, add them to [`lib/questions.ts`](lib/questions.ts).
 - **Download CSV / JSON.** Bucket similar answers together (e.g. "UK" =
   "Britain" = "Great Britain") and count the votes.
 
-## Phase 2 — Play on the stag (`/play`)
+## Phase 2 — Play on the day (`/play`)
 
 Runs in the browser — great on a TV. It reads the bucketed answers from
 [`lib/game.ts`](lib/game.ts).

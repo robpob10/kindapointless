@@ -21,7 +21,7 @@ export default function HomeRules({
       s.cancel();
       const text =
         `Here's how ${title} works. Before the day, everyone submitted answers to questions about ${subject}. ` +
-        "On the stag, each question's board is revealed on the screen — the answers two or more of us gave first, then the ones only one person gave. " +
+        "On the day, each question's board is revealed on the screen — the answers two or more of us gave first, then the ones only one person gave. " +
         `${subject} then has to name an answer. Landing on one that only a single person submitted nails it, and everyone drinks. ` +
         `But naming an answer two or more people gave, or something nobody said at all, means ${subject} drinks.`;
       const u = new SpeechSynthesisUtterance(text);
@@ -46,7 +46,7 @@ export default function HomeRules({
       <ol className="list-decimal space-y-2 pl-5 leading-relaxed text-zinc-200">
         <li>Before the day, everyone secretly submitted answers to questions about {subject}.</li>
         <li>
-          On the stag, each question’s board is revealed on the screen — the answers <b>2+ of us gave</b>{' '}
+          On the day, each question’s board is revealed on the screen — the answers <b>2+ of us gave</b>{' '}
           (<span className="text-rose-400">{loseLabel}</span>) first, then the ones <b>only one person gave</b>{' '}
           (<span className="text-green-400">{winLabel}</span>).
         </li>

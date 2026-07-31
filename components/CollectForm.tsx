@@ -125,7 +125,7 @@ export default function CollectForm({
         <ol className="list-decimal space-y-2 pl-5 leading-relaxed text-zinc-200">
           <li>Add as many answers as you want to each question.</li>
           <li>
-            On the stag, {subject} has to guess the answer that the fewest of us gave (without landing on an
+            On the day, {subject} has to guess the answer that the fewest of us gave (without landing on an
             answer nobody said). Lowest non-zero answer → we all drink; otherwise {subject} drinks.
           </li>
           <li>Joke answers are allowed but I reserve the right to prune them.</li>
