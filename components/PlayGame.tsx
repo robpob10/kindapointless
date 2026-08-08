@@ -63,8 +63,10 @@ export default function PlayGame({
   }, []);
 
   // Announce the verdict (adjudication buttons at the end) with a random
-  // recorded clip for the pressed kind.
+  // recorded clip for the pressed kind, boosted 1.5x via a gain node
+  // (HTMLAudioElement.volume caps at 1.0).
   const clipRef = useRef<HTMLAudioElement | null>(null);
+  const clipCtxRef = useRef<AudioContext | null>(null);
   const announce = useCallback((kind: 'win' | 'lose') => {
     try {
       if (clipRef.current) {
@@ -74,6 +76,18 @@ export default function PlayGame({
       const n = 1 + Math.floor(Math.random() * CLIP_COUNTS[kind]);
       const a = new Audio(`/${kind}-${n}.ogg`);
       clipRef.current = a;
+      try {
+        const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        const ctx = (clipCtxRef.current = clipCtxRef.current || new AC());
+        void ctx.resume();
+        const src = ctx.createMediaElementSource(a);
+        const gain = ctx.createGain();
+        gain.gain.value = 1.5;
+        src.connect(gain);
+        gain.connect(ctx.destination);
+      } catch {
+        /* no Web Audio - play at normal volume */
+      }
       void a.play();
     } catch {
       /* ignore */
