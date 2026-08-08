@@ -189,6 +189,15 @@ export const GAME: Game = {
       ],
     },
     {
+      text: 'Wouldn’t it be better if Jean-Luc was boss?',
+      answers: [
+        { variants: ['Fuckkk no', 'No', 'Very no'], votes: 3 },
+        { variants: ['Depends on the day'], votes: 1 },
+        { variants: ['If you fancy sleeping'], votes: 1 },
+        { variants: ['Jean-Luc pretty much is the boss tbh', 'Yes', '100%'], votes: 1 },
+      ],
+    },
+    {
       text: 'What is Pierre’s net worth?',
       answers: [
         { variants: ['30m'], votes: 1 },
@@ -403,15 +412,6 @@ export const GAME: Game = {
         { variants: ['Jeans-Off'], votes: 1 },
         { variants: ['Taller Jean-Luc'], votes: 1 },
         { variants: ['Galadriel queen of the elves'], votes: 1 },
-      ],
-    },
-    {
-      text: 'Wouldn’t it be better if Jean-Luc was boss?',
-      answers: [
-        { variants: ['Fuckkk no', 'No', 'Very no'], votes: 3 },
-        { variants: ['Depends on the day'], votes: 1 },
-        { variants: ['If you fancy sleeping'], votes: 1 },
-        { variants: ['Jean-Luc pretty much is the boss tbh', 'Yes', '100%'], votes: 1 },
       ],
     },
     {
