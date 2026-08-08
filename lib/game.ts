@@ -26,7 +26,7 @@ export const GAME: Game = {
         { variants: ['Croatia'], votes: 2 },
         { variants: ['Slovenia'], votes: 2 },
         { variants: ['Afghanistan'], votes: 2 },
-        { variants: ['That one country with the casino', 'Monaco'], votes: 2 },
+        { variants: ['That one country with the casino', 'Monaco'], votes: 1 },
         { variants: ['Italy'], votes: 1 },
         { variants: ['Lebanon'], votes: 1 },
         { variants: ['Syria'], votes: 1 },
@@ -127,7 +127,7 @@ export const GAME: Game = {
       text: "What is Pierre's favourite task at work",
       answers: [
         { variants: ['Meetings'], votes: 2 },
-        { variants: ['Vibe coding', 'Coding'], votes: 2 },
+        { variants: ['Vibe coding', 'Coding'], votes: 1 },
         { variants: ['Eating'], votes: 1 },
         { variants: ['Pulling an all nighter'], votes: 1 },
         { variants: ['Hiring people'], votes: 1 },
@@ -144,9 +144,9 @@ export const GAME: Game = {
     {
       text: 'Name a hobby Pierre enjoys',
       answers: [
-        { variants: ['Sleeping in a toilet before an interview', 'Sleeping in KX loos'], votes: 2 },
+        { variants: ['Sleeping in a toilet before an interview', 'Sleeping in KX loos'], votes: 1 },
         { variants: ['Chess'], votes: 2 },
-        { variants: ['$$$', 'Making money'], votes: 2 },
+        { variants: ['$$$', 'Making money'], votes: 1 },
         { variants: ['Fishing'], votes: 1 },
         { variants: ['Making sourdough'], votes: 1 },
         { variants: ['Coffee runs'], votes: 1 },
@@ -172,7 +172,7 @@ export const GAME: Game = {
       text: 'Is Pierre a good boss?',
       answers: [
         { variants: ['Yes', 'Very yes'], votes: 3 },
-        { variants: ['Fuck no', 'No'], votes: 2 },
+        { variants: ['Fuck no', 'No'], votes: 1 },
         { variants: ['Prefer not to say'], votes: 1 },
         { variants: ['When graph go up'], votes: 1 },
         { variants: ['Surprisingly'], votes: 1 },
@@ -313,7 +313,7 @@ export const GAME: Game = {
       text: 'Name an item of footwear Pierre wears on a regular basis',
       answers: [
         { variants: ['Crocs'], votes: 3 },
-        { variants: ['High Heels', 'Stilletos'], votes: 2 },
+        { variants: ['High Heels', 'Stilletos'], votes: 1 },
         { variants: ['Shoes'], votes: 1 },
         { variants: ['Flipflops'], votes: 1 },
         { variants: ['Jean-Luc'], votes: 1 },
@@ -324,7 +324,7 @@ export const GAME: Game = {
       answers: [
         { variants: ['Soniya'], votes: 3 },
         { variants: ['JL', 'Jean-Luc'], votes: 2 },
-        { variants: ['The cats', 'Cat'], votes: 2 },
+        { variants: ['The cats', 'Cat'], votes: 1 },
         { variants: ['Kelvin'], votes: 1 },
         { variants: ['Charlie Cui'], votes: 1 },
         { variants: ['Alex Benger'], votes: 1 },
