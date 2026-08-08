@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { GAME, type Answer, type Game } from '@/lib/game';
 import { NAME, TITLE } from '@/lib/config';
 
+const WIN_CLIP_COUNT = 3; // public/win-1.ogg ... win-3.ogg
+
 export default function PlayGame({
   game = GAME,
   name = NAME,
@@ -60,22 +62,37 @@ export default function PlayGame({
   }, []);
 
   // Announce the verdict (adjudication buttons at the end).
+  // Win plays one of the recorded clips at random; lose uses speech.
+  const clipRef = useRef<HTMLAudioElement | null>(null);
   const announce = useCallback(
     (kind: 'win' | 'lose') => {
+      if (kind === 'win') {
+        try {
+          if (clipRef.current) {
+            clipRef.current.pause();
+            clipRef.current.currentTime = 0;
+          }
+          const n = 1 + Math.floor(Math.random() * WIN_CLIP_COUNT);
+          const a = new Audio(`/win-${n}.ogg`);
+          clipRef.current = a;
+          void a.play();
+        } catch {
+          /* ignore */
+        }
+        return;
+      }
       try {
         const s = window.speechSynthesis;
         if (mutedRef.current || !s) return;
         s.cancel();
-        const u = new SpeechSynthesisUtterance(
-          kind === 'win' ? `${winLabel}! Everyone drinks!` : `${loseLabel}! ${name} drinks!`
-        );
+        const u = new SpeechSynthesisUtterance(`${loseLabel}! ${name} drinks!`);
         u.rate = 1;
         s.speak(u);
       } catch {
         /* ignore */
       }
     },
-    [winLabel, loseLabel, name]
+    [loseLabel, name]
   );
 
   // Speak `text`, then call `done` when it finishes (or a fallback fires).
