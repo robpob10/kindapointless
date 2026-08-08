@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { GAME, type Answer, type Game } from '@/lib/game';
 import { NAME, TITLE } from '@/lib/config';
 
-const WIN_CLIP_COUNT = 3; // public/win-1.ogg ... win-3.ogg
+// Recorded verdict clips in public/: win-1..3.ogg, lose-1..4.ogg
+const CLIP_COUNTS = { win: 3, lose: 4 } as const;
 
 export default function PlayGame({
   game = GAME,
@@ -61,39 +62,23 @@ export default function PlayGame({
     }
   }, []);
 
-  // Announce the verdict (adjudication buttons at the end).
-  // Win plays one of the recorded clips at random; lose uses speech.
+  // Announce the verdict (adjudication buttons at the end) with a random
+  // recorded clip for the pressed kind.
   const clipRef = useRef<HTMLAudioElement | null>(null);
-  const announce = useCallback(
-    (kind: 'win' | 'lose') => {
-      if (kind === 'win') {
-        try {
-          if (clipRef.current) {
-            clipRef.current.pause();
-            clipRef.current.currentTime = 0;
-          }
-          const n = 1 + Math.floor(Math.random() * WIN_CLIP_COUNT);
-          const a = new Audio(`/win-${n}.ogg`);
-          clipRef.current = a;
-          void a.play();
-        } catch {
-          /* ignore */
-        }
-        return;
+  const announce = useCallback((kind: 'win' | 'lose') => {
+    try {
+      if (clipRef.current) {
+        clipRef.current.pause();
+        clipRef.current.currentTime = 0;
       }
-      try {
-        const s = window.speechSynthesis;
-        if (mutedRef.current || !s) return;
-        s.cancel();
-        const u = new SpeechSynthesisUtterance(`${loseLabel}! ${name} drinks!`);
-        u.rate = 1;
-        s.speak(u);
-      } catch {
-        /* ignore */
-      }
-    },
-    [loseLabel, name]
-  );
+      const n = 1 + Math.floor(Math.random() * CLIP_COUNTS[kind]);
+      const a = new Audio(`/${kind}-${n}.ogg`);
+      clipRef.current = a;
+      void a.play();
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   // Speak `text`, then call `done` when it finishes (or a fallback fires).
   const speakThen = useCallback((text: string, done: () => void) => {
